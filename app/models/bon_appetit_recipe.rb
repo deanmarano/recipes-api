@@ -53,6 +53,7 @@ class BonAppetitRecipe
     @recipe.assign_attributes(
       source: url,
       slug: slug,
+      url: url,
       cover_image_url: cover_image_url,
       cover_image_alt: cover_image_alt,
       cover_image_caption: cover_image_caption,
@@ -67,5 +68,20 @@ class BonAppetitRecipe
 
   def page
     @page ||= Nokogiri::HTML(open(self.url))
+  end
+
+  def other_recipes
+    page.
+      css("a").
+      map { |a| a.attributes["href"]&.value }.
+      compact.
+      uniq.
+      filter { |url| url.match /recipe\// }.
+      map do |url|
+        url = "https://bonappetit.com/" + url unless url.match "bonappetit"
+        uri = URI(url)
+        uri.fragment = nil
+        BonAppetitRecipe.new(uri.to_s)
+      end
   end
 end

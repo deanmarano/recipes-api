@@ -1,5 +1,6 @@
 class Recipe < ApplicationRecord
   include AASM
+  validates :url, uniqueness: true
 
   aasm column: :status do
     state :draft, initial: true

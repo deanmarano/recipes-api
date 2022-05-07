@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_27_162716) do
+ActiveRecord::Schema.define(version: 2020_06_05_084214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2020_05_27_162716) do
     t.string "cover_image_alt"
     t.string "cover_image_caption"
     t.string "servings"
+    t.string "url"
     t.index ["parent_id"], name: "index_recipes_on_parent_id"
   end
 
