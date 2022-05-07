@@ -21,7 +21,7 @@ gem 'activestorage-database-service', github: 'TitovDigital/activestorage-databa
 gem 'selenium-webdriver'
 gem 'watir-rails'
 gem 'paper_trail'
-gem 'doorkeeper'
+gem 'doorkeeper', "~> 5.4.0"
 gem 'doorkeeper-jwt'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"

@@ -86,7 +86,7 @@ GEM
       reline (>= 0.2.7)
     diff-lcs (1.5.0)
     digest (3.1.0)
-    doorkeeper (5.5.4)
+    doorkeeper (5.4.0)
       railties (>= 5)
     doorkeeper-jwt (0.4.1)
       jwt (>= 2.1)
@@ -231,7 +231,7 @@ DEPENDENCIES
   activestorage-database-service!
   bcrypt (~> 3.1.7)
   debug
-  doorkeeper
+  doorkeeper (~> 5.4.0)
   doorkeeper-jwt
   dotenv-rails
   fast_jsonapi
