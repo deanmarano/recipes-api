@@ -44,7 +44,7 @@ class RecipesController < ApplicationController
 
   # POST /recipes/import
   def import
-    recipe = BonAppetitRecipe.new(params[:url]).recipe
+    recipe = JsonLdRecipe.new(params[:url]).recipe
     if recipe.save
       render json: RecipeSerializer.new(recipe).serialized_json
     else
