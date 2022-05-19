@@ -13,7 +13,8 @@ class JsonLdRecipe
   end
 
   def ld_json
-    JSON.parse script_ld_json_element.text, symbolize_names: true
+    json = JSON.parse script_ld_json_element.text, symbolize_names: true
+    json[:@graph]&.find { |a| a[:@type] == 'Recipe' } || json
   end
 
   def name
@@ -37,7 +38,7 @@ class JsonLdRecipe
   end
 
   def cover_image_url
-    ld_json[:image]
+    ld_json[:image]&.last || ld_json[:image]
   end
 
   def cover_image_alt
