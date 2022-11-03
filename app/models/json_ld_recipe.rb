@@ -38,7 +38,11 @@ class JsonLdRecipe
   end
 
   def cover_image_url
-    ld_json[:image]&.last || ld_json[:image]
+    if ld_json.is_a? Array
+      ld_json[:image]&.last
+    else
+      ld_json[:image]
+    end
   end
 
   def cover_image_alt
