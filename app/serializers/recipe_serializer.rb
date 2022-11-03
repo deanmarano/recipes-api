@@ -2,9 +2,9 @@ class RecipeSerializer
   include FastJsonapi::ObjectSerializer
 
   set_key_transform :dash
+  set_id :slug
 
   attributes(
-    :slug,
     :name,
     :source,
     :status,
