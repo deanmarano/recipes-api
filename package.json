@@ -1,0 +1,22 @@
+{
+  "name": "recipes",
+  "version": "1.0.0",
+  "description": "This is an app to keep track of recipes and easily iterate on them.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deanmarano/recipes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deanmarano/recipes/issues"
+  },
+  "homepage": "https://github.com/deanmarano/recipes#readme"
+}
