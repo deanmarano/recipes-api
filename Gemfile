@@ -52,6 +52,8 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'rspec-rails'
   gem 'pry-rails'
+  gem 'parallel_tests'
+  gem 'rspec_junit_formatter'
 end
 
 group :development do
