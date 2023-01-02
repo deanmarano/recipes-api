@@ -10,6 +10,11 @@ class Recipe < ApplicationRecord
     event :archive do
       transitions from: [:draft, :active], to: :archived
     end
+
+
+    event :publish do
+      transitions from: :draft, to: :active
+    end
   end
 
   has_many_attached :images

@@ -12,9 +12,18 @@ class JsonLdRecipe
       .find { |a| a.attributes["type"]&.value == "application/ld+json" }
   end
 
+  def valid?
+    self.script_ld_json_element.present?
+  end
+
   def ld_json
+    return @json if @json
     json = JSON.parse script_ld_json_element.text, symbolize_names: true
-    json[:@graph]&.find { |a| a[:@type] == 'Recipe' } || json
+    @json = if json.is_a? Array
+      json.find { |d| d[:@type]&.first == 'Recipe' || d[:@type] == 'Recipe' }
+    elsif json.is_a? Hash
+      json[:@graph]&.find { |a| a[:@type] == 'Recipe' } || json
+    end
   end
 
   def name
@@ -38,10 +47,13 @@ class JsonLdRecipe
   end
 
   def cover_image_url
-    if ld_json.is_a? Array
-      ld_json[:image]&.last
+    image = ld_json[:image]
+    if image.is_a? Hash
+      image[:url]
+    elsif image.is_a? Array
+      image.first
     else
-      ld_json[:image]
+      image
     end
   end
 
@@ -85,7 +97,7 @@ class JsonLdRecipe
   end
 
   def slug
-    self.url.gsub(/.*\//, '')
+    self.url.gsub(/.*\//, '') || self.url[0..-2].gsub(/.*\//, '')
   end
 
   def recipe

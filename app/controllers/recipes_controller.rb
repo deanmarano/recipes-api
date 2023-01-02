@@ -3,7 +3,7 @@ class RecipesController < ApplicationController
 
   # GET /recipes
   def index
-    @recipes = Recipe.all
+    @recipes = Recipe.active
 
     render json: RecipeSerializer.new(@recipes).serialized_json
   end
