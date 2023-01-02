@@ -12,7 +12,7 @@ executors:
           BUNDLER_VERSION: 2.3.13
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
-          PG_HOST: 127.0.0.1
+          PGHOST: 127.0.0.1
           PGUSER: recipes
       - image: circleci/postgres:12.0
         environment:
@@ -57,6 +57,14 @@ jobs:
           root: ~/
           paths:
             - ./recipes-api
+      - run:
+        name: Run tests
+        command: |
+          mkdir ~/rspec
+          bundle exec rake parallel:spec"[8]"
+      - store_test_results:
+        path: tmp/rspec
+
 
 workflows:
   version: 2
