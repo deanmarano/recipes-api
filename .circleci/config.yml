@@ -48,7 +48,7 @@ jobs:
           command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
       - run:
           name: Setup DB
-          command: RAILS_ENV=test bundle exec rails db:create db:schema:load --trace
+          command: RAILS_ENV=test bundle exec rails db:migrate:reset
       - save_cache:
           key: recipes-api-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           paths:
