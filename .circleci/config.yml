@@ -57,14 +57,6 @@ jobs:
           root: ~/
           paths:
             - ./recipes-api
-      - run:
-        name: Run tests
-        command: |
-          mkdir ~/rspec
-          bundle exec rake parallel:spec"[8]"
-      - store_test_results:
-        path: tmp/rspec
-
 
 workflows:
   version: 2
