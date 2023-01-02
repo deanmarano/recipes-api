@@ -4,7 +4,7 @@ executors:
   default:
     working_directory: ~/recipes-api
     docker:
-      - image: circleci/ruby:3.1.2
+      - image: cimg/ruby:3.1.2
         environment:
           BUNDLE_JOBS: 3
           BUNDLE_PATH: vendor/bundle
@@ -13,7 +13,7 @@ executors:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
           PG_HOST: 127.0.0.1
-          PGUSER: hixonrails
+          PGUSER: recipes
       - image: circleci/postgres:12.0
         environment:
           POSTGRES_DB: recipes_test
