@@ -14,7 +14,7 @@ executors:
           DB_HOST: 127.0.0.1
           PGHOST: 127.0.0.1
           PGUSER: recipes
-      - image: circleci/postgres:12.0
+      - image: cimg/postgres:14.6
         environment:
           POSTGRES_DB: recipes_test
           POSTGRES_USER: recipes
@@ -48,7 +48,9 @@ jobs:
           command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
       - run:
           name: Setup DB
-          command: RAILS_ENV=test bundle exec rails db:migrate:reset
+          command: |
+            RAILS_ENV=test bundle exec rails db:migrate:reset
+            RAILS_ENV=test bundle exec rake parallel:setup"[8]"
       - save_cache:
           key: recipes-api-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           paths:
@@ -57,6 +59,13 @@ jobs:
           root: ~/
           paths:
             - ./recipes-api
+      - run:
+          name: Run tests
+          command: |
+            mkdir tmp/rspec
+            RAILS_ENV=test bundle exec rake parallel:spec"[8]"
+      - store_test_results:
+          path: tmp/rspec
 
 workflows:
   version: 2

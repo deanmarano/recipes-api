@@ -54,6 +54,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'parallel_tests'
   gem 'rspec_junit_formatter'
+  gem 'factory_bot_rails'
 end
 
 group :development do

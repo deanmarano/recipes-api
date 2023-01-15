@@ -95,6 +95,11 @@ GEM
       dotenv (= 2.7.6)
       railties (>= 3.2)
     erubi (1.10.0)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
     globalid (1.0.0)
@@ -241,6 +246,7 @@ DEPENDENCIES
   doorkeeper (~> 5.4.0)
   doorkeeper-jwt
   dotenv-rails
+  factory_bot_rails
   fast_jsonapi
   jsonapi_parameters
   paper_trail
