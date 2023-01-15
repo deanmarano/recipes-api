@@ -48,7 +48,9 @@ jobs:
           command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
       - run:
           name: Setup DB
-          command: RAILS_ENV=test bundle exec rails db:migrate:reset
+          command: |
+            RAILS_ENV=test bundle exec rails db:migrate:reset
+            RAILS_ENV=test bundle exec rake parallel:setup"[8]"
       - save_cache:
           key: recipes-api-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
           paths:
@@ -61,8 +63,6 @@ jobs:
           name: Run tests
           command: |
             mkdir ~/rspec
-            dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
-            RAILS_ENV=test bundle exec rake parallel:setup"[8]"
             RAILS_ENV=test bundle exec rake parallel:spec"[8]"
       - store_test_results:
           path: tmp/rspec
