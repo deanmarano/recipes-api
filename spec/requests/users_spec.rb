@@ -15,7 +15,7 @@ RSpec.describe "Users", type: :request do
       get users_path, params: {}, headers: { 'Authorization': 'Bearer ' + token.token }
       expect(response).to have_http_status(200)
       body = JSON.parse(response.body)
-      expect(body.length).to eq(1)
+      expect(body.length).to eq(User.count)
     end
   end
 end
