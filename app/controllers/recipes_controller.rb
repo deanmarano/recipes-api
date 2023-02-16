@@ -44,9 +44,12 @@ class RecipesController < ApplicationController
 
   # POST /recipes/import
   def import
+    if recipe = Recipe.find_by(source: params[:url])
+      return render json: RecipeSerializer.new(recipe).serialized_json
+    end
     recipe = JsonLdRecipe.new(params[:url]).recipe
     if recipe.save
-      render json: RecipeSerializer.new(recipe).serialized_json
+      render json: RecipeSerializer.new(recipe).serialized_json, status: :created
     else
       render json: recipe.errors, status: :unprocessable_entity
     end
