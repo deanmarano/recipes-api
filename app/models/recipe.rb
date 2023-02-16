@@ -2,6 +2,8 @@ class Recipe < ApplicationRecord
   include AASM
   validates :url, uniqueness: true
 
+  belongs_to :user
+
   aasm column: :status do
     state :draft, initial: true
     state :active

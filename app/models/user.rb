@@ -10,6 +10,8 @@ class User < ApplicationRecord
     dependent: :delete_all # or :destroy if you need callbacks
   has_secure_password
 
+  has_many :recipes
+
   def authenticate!(password)
     if self.authenticate(password)
       true
