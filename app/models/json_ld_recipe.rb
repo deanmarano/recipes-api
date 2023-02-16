@@ -96,7 +96,33 @@ class JsonLdRecipe
     ld_json[:@type]
   end
 
+  def source_name
+    element = self.page.xpath("//meta")
+      .find { |a| a.attributes["property"]&.value == "og:site_name" }
+    element.attributes["content"]&.value if element
+  end
+
+  def source_favicon_url
+    element = self.page.xpath("//link")
+      .find { |a| a.attributes["type"]&.value == "image/x-icon" }
+    return element.attributes["href"]&.value if element
+    element = self.page.xpath("//link")
+      .find { |a| ["icon", "shortcut icon"].include? a.attributes["rel"]&.value }
+    if element
+      favicon_uri = URI.parse(element.attributes["href"]&.value)
+      favicon_uri.hostname = uri.hostname if !favicon_uri.hostname
+      favicon_uri.scheme = uri.scheme if !favicon_uri.scheme
+      favicon_uri.to_s
+    end
+
+  end
+
+  def uri
+    URI.parse(self.url)
+  end
+
   def slug
+    self.uri.path.gsub(/^\/?/, "").gsub(/\/$/, '') ||
     self.url.gsub(/.*\//, '') || self.url[0..-2].gsub(/.*\//, '')
   end
 
@@ -113,7 +139,9 @@ class JsonLdRecipe
       name: name,
       tagline: tagline,
       instructions: instructions,
-      ingredients: ingredients
+      ingredients: ingredients,
+      source_name: source_name,
+      source_favicon_url: source_favicon_url
     )
     @recipe
   end

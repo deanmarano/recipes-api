@@ -17,6 +17,8 @@ class RecipeSerializer
     :cover_image_url,
     :cover_image_alt,
     :cover_image_caption,
-    :servings
+    :servings,
+    :source_name,
+    :source_favicon_url
   )
 end
