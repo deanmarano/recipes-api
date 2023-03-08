@@ -1,9 +1,14 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [:show, :update, :destroy]
+  before_action :doorkeeper_authorize!
 
   # GET /recipes
   def index
-    @recipes = Recipe.active
+    if params[:user]
+      @recipes = current_user.recipes
+    else
+      @recipes = Recipe.active
+    end
 
     render json: RecipeSerializer.new(@recipes).serialized_json
   end
@@ -47,7 +52,7 @@ class RecipesController < ApplicationController
     if recipe = Recipe.find_by(source: params[:url])
       return render json: RecipeSerializer.new(recipe).serialized_json
     end
-    recipe = JsonLdRecipe.new(params[:url]).recipe
+    recipe = JsonLdRecipe.new(params[:url], current_user).recipe
     if recipe.save
       render json: RecipeSerializer.new(recipe).serialized_json, status: :created
     else
@@ -56,12 +61,10 @@ class RecipesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_recipe
       @recipe = Recipe.find_by(slug: params[:id]) || Recipe.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def recipe_params
       params.from_jsonapi.require(:recipe).permit(:slug, :name, :source, :status, :sha, :from_sha, :tagline, :ingredients, :instructions, images: [])
     end

@@ -1,14 +1,15 @@
 require 'open-uri'
 
 class JsonLdRecipe
-  attr_reader :url
+  attr_reader :url, :user
 
-  def initialize(url = 'https://www.sigsbeestreet.co/post/whole-wheat-chocolate-chip-cookies')
+  def initialize(url = 'https://www.sigsbeestreet.co/post/whole-wheat-chocolate-chip-cookies', user)
     @url = url
+    @user = user
   end
 
   def script_ld_json_element
-    self.page.xpath("//script")
+    self.html.xpath("//script")
       .find { |a| a.attributes["type"]&.value == "application/ld+json" }
   end
 
@@ -51,7 +52,11 @@ class JsonLdRecipe
     if image.is_a? Hash
       image[:url]
     elsif image.is_a? Array
-      image.first
+      if image.first.is_a? Hash
+        image.first[:url]
+      else
+        image.first
+      end
     else
       image
     end
@@ -97,16 +102,16 @@ class JsonLdRecipe
   end
 
   def source_name
-    element = self.page.xpath("//meta")
+    element = self.html.xpath("//meta")
       .find { |a| a.attributes["property"]&.value == "og:site_name" }
     element.attributes["content"]&.value if element
   end
 
   def source_favicon_url
-    element = self.page.xpath("//link")
+    element = self.html.xpath("//link")
       .find { |a| a.attributes["type"]&.value == "image/x-icon" }
     return element.attributes["href"]&.value if element
-    element = self.page.xpath("//link")
+    element = self.html.xpath("//link")
       .find { |a| ["icon", "shortcut icon"].include? a.attributes["rel"]&.value }
     if element
       favicon_uri = URI.parse(element.attributes["href"]&.value)
@@ -129,6 +134,7 @@ class JsonLdRecipe
   def recipe
     @recipe ||= Recipe.new
     @recipe.assign_attributes(
+      user: user,
       source: url,
       slug: slug,
       url: url,
@@ -146,12 +152,16 @@ class JsonLdRecipe
     @recipe
   end
 
+  def html
+    @html ||= page.live_html
+  end
+
   def page
-    @page ||= Nokogiri::HTML(URI.open(self.url))
+    @page ||= PageSnapshot.capture(self.url, self.user)
   end
 
   def other_recipes
-    page.
+    html.
       css("a").
       map { |a| a.attributes["href"]&.value }.
       compact.
