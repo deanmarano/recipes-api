@@ -66,6 +66,18 @@ class RecipesController < ApplicationController
     end
 
     def recipe_params
-      params.from_jsonapi.require(:recipe).permit(:slug, :name, :source, :status, :sha, :from_sha, :tagline, :ingredients, :instructions, images: [])
+      params.from_jsonapi.require(:recipe).permit(:slug,
+                                                  :cover_image_alt,
+                                                  :cover_image_caption,
+                                                  :cover_image_url,
+                                                  :ingredients,
+                                                  :instructions,
+                                                  :name,
+                                                  :source,
+                                                  :source_favicon_url,
+                                                  :source_name,
+                                                  :status,
+                                                  :tagline,
+                                                  images: [])
     end
 end
