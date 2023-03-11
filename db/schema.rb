@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_07_235514) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_11_173434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -109,6 +109,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_235514) do
     t.datetime "finished_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "recipe_id"
+    t.index ["recipe_id"], name: "index_page_snapshots_on_recipe_id"
     t.index ["user_id"], name: "index_page_snapshots_on_user_id"
   end
 
